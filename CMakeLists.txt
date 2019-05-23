@@ -19,12 +19,12 @@ add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 #-------------------------------------------------------------------------------------------
 # Compiler Flags
 #-------------------------------------------------------------------------------------------
-set (CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_CURRENT_SOURCE_DIR}/../../../scripts/CMake")
-include(CommonCppFlags)
+# set (CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_CURRENT_SOURCE_DIR}/../../../scripts/CMake")
+# include(CommonCppFlags)
 
-if(APPLE)
-    SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wdeprecated")
-endif()
+# if(APPLE)
+    # SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wdeprecated")
+# endif()
 
 
 #-------------------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ endif()
 #-------------------------------------------------------------------------------------------
 target_include_directories(EATest PUBLIC include)
 target_link_libraries(EATest EABase)
-target_link_libraries(EATest EAStdC)
-target_link_libraries(EATest EASTL)
-target_link_libraries(EATest EAMain)
-target_link_libraries(EATest EAThread)
+# target_link_libraries(EATest EAStdC)
+# target_link_libraries(EATest EASTL)
+# target_link_libraries(EATest EAMain)
+# target_link_libraries(EATest EAThread)
