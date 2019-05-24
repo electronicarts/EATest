@@ -5,10 +5,19 @@ cmake_minimum_required(VERSION 3.1)
 project(EATest CXX)
 
 #-------------------------------------------------------------------------------------------
+# Options
+#-------------------------------------------------------------------------------------------
+option(EATEST_BUILD_TESTS "Enable generation of build files for tests" OFF)
+
+#-------------------------------------------------------------------------------------------
 # Library definition
 #-------------------------------------------------------------------------------------------
-file(GLOB EATEST_SOURCES "source/*.cpp" "include/EATest/*.*" "include/EATest/internal/*.h")
+file(GLOB EATEST_SOURCES "source/*.cpp")
 add_library(EATest ${EATEST_SOURCES})
+
+if(EATEST_BUILD_TESTS)
+    add_subdirectory(test)
+endif()
 
 #-------------------------------------------------------------------------------------------
 # Defines
@@ -17,22 +26,14 @@ add_definitions(-D_CHAR16T)
 add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 
 #-------------------------------------------------------------------------------------------
-# Compiler Flags
-#-------------------------------------------------------------------------------------------
-# set (CMAKE_MODULE_PATH "${CMAKE_MODULE_PATH};${CMAKE_CURRENT_SOURCE_DIR}/../../../scripts/CMake")
-# include(CommonCppFlags)
-
-# if(APPLE)
-    # SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wdeprecated")
-# endif()
-
-
-#-------------------------------------------------------------------------------------------
 # Include directories
 #-------------------------------------------------------------------------------------------
 target_include_directories(EATest PUBLIC include)
 target_include_directories(EATest PRIVATE ../EASTL/include)
 
+#-------------------------------------------------------------------------------------------
+# Dependencies
+#-------------------------------------------------------------------------------------------
 target_link_libraries(EATest EABase)
 target_link_libraries(EATest EAStdC)
 target_link_libraries(EATest EASTL)
