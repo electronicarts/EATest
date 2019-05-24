@@ -29,7 +29,6 @@ add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 # Include directories
 #-------------------------------------------------------------------------------------------
 target_include_directories(EATest PUBLIC include)
-target_include_directories(EATest PRIVATE ../EASTL/include)
 
 #-------------------------------------------------------------------------------------------
 # Dependencies

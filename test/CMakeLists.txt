@@ -28,24 +28,33 @@ include(CommonCppFlags)
 file(GLOB EATESTTEST_SOURCES "source/*.cpp")
 set(SOURCES ${EATESTTEST_SOURCES})
 
+
 #-------------------------------------------------------------------------------------------
 # Executable definition
 #-------------------------------------------------------------------------------------------
 add_executable(EATestTest ${SOURCES})
 
 #-------------------------------------------------------------------------------------------
+# Include directories
+#-------------------------------------------------------------------------------------------
+target_include_directories(EATestTest PUBLIC include)
+
+#-------------------------------------------------------------------------------------------
 # Dependencies 
 #-------------------------------------------------------------------------------------------
-add_subdirectory(packages/EABase)
 add_subdirectory(packages/EAAssert)
+add_subdirectory(packages/EABase)
 add_subdirectory(packages/EAMain)
 add_subdirectory(packages/EASTL)
+add_subdirectory(packages/EAStdC)
 add_subdirectory(packages/EAThread)
 
-target_link_libraries(EATestTest EABase)
 target_link_libraries(EATestTest EAAssert)
+target_link_libraries(EATestTest EABase)
 target_link_libraries(EATestTest EAMain)
 target_link_libraries(EATestTest EASTL)
+target_link_libraries(EATestTest EAStdC)
+target_link_libraries(EATestTest EATest)
 target_link_libraries(EATestTest EAThread)
 
 #-------------------------------------------------------------------------------------------
