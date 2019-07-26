@@ -35,8 +35,8 @@
 ///////////////////////////////////////////////////////////////////////////////
 
 #ifndef EATEST_VERSION
-    #define EATEST_VERSION   "2.08.05"
-    #define EATEST_VERSION_N  20805
+    #define EATEST_VERSION   "2.08.06"
+    #define EATEST_VERSION_N  20806
 #endif
 
 

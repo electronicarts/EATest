@@ -111,7 +111,7 @@
                 #define EATEST_DEBUG_BREAK() __debugbreak() // This is a compiler intrinsic which will map to appropriate inlined asm for the platform.
             #elif defined(EA_PLATFORM_SONY) && defined(EA_PROCESSOR_X86_64)
                 #define EATEST_DEBUG_BREAK() do { { __asm volatile ("int $0x41"); } } while(0)
-            #elif defined(EA_PROCESSOR_ARM) && (defined(__APPLE__) || defined(CS_UNDEFINED_STRING))
+            #elif defined(EA_PROCESSOR_ARM) && defined(__APPLE__)
                 #include <signal.h>
                 #include <unistd.h>
                 #define EATEST_DEBUG_BREAK() kill(getpid(), SIGINT)   // This lets you continue execution.
@@ -193,7 +193,7 @@ namespace EA
         /// of output tagged by channel names or group names.
         /// Nowhere is kTestTraceGroupName used by the EATest, as EATest 
         /// attempts to stay independent of tracing/logging systems.
-        extern const char8_t* kTestTraceGroupName;
+        extern const char* kTestTraceGroupName;
 
 
         /// enum TestResult
@@ -234,13 +234,13 @@ namespace EA
         ///
         /// Wrapper for EA::EAMain::Report.
         /// 
-        EATEST_API void Report(const char8_t* pFormat, ...);
+        EATEST_API void Report(const char* pFormat, ...);
 
         /// ReportVerbosity
         ///
         /// Wrapper for EA::EAMain::ReportVerbosity.
         ///
-        EATEST_API void ReportVerbosity(unsigned minVerbosity, const char8_t* pFormat, ...);
+        EATEST_API void ReportVerbosity(unsigned minVerbosity, const char* pFormat, ...);
 
         /// GetVerbosity
         ///
@@ -302,7 +302,7 @@ namespace EA
         /// Example usage:
         ///     Verify(list.size() == 17, "List size != 17.");
 
-        EATEST_API bool Verify(bool bValue, const char8_t* pMessage, Test* pTestContext = NULL);
+        EATEST_API bool Verify(bool bValue, const char* pMessage, Test* pTestContext = NULL);
 
 
         /// EATEST_VERIFY
@@ -605,7 +605,7 @@ namespace EA
             /// If the test name is not supplied, it is empty. If the ReportFunction is
             /// not supplied, the default global report function is used.
             ///
-            Test(const char8_t* pTestName = NULL, EA::EAMain::ReportFunction pReportFunction = NULL);
+            Test(const char* pTestName = NULL, EA::EAMain::ReportFunction pReportFunction = NULL);
 
             /// ~Test
             ///
@@ -697,7 +697,7 @@ namespace EA
             ///         return mnErrorCount ? kTestResultError : kTestResultSuccess;
             ///     }
             ///
-            virtual bool Verify(bool bValue, const char8_t* pMessage);
+            virtual bool Verify(bool bValue, const char* pMessage);
 
             /// VerifyFormatted
             ///
@@ -709,7 +709,7 @@ namespace EA
             ///         return mnErrorCount ? kTestResultError : kTestResultSuccess;
             ///     }
             ///
-            virtual bool VerifyFormatted(bool bValue, const char8_t* pFormat, ...);
+            virtual bool VerifyFormatted(bool bValue, const char* pFormat, ...);
 
         protected:
             friend class TestSuite;
@@ -769,7 +769,7 @@ namespace EA
             ///
             /// Constructs a TestFunction object with the given name and function.
             /// 
-            TestFunction(const char8_t* pTestName = NULL, FunctionPtr pFunction = NULL);
+            TestFunction(const char* pTestName = NULL, FunctionPtr pFunction = NULL);
 
             /// Run
             ///
@@ -852,7 +852,7 @@ namespace EA
             /// Constructs a TestMemberFunction object with the given name and test
             /// class functions.
             ///
-            TestMemberFunction(const char8_t* pTestName = NULL, T* pObject = NULL, MemberFunctionPtr pTestFunction = NULL,
+            TestMemberFunction(const char* pTestName = NULL, T* pObject = NULL, MemberFunctionPtr pTestFunction = NULL,
                                 MemberFunctionPtr pInitFunction = NULL, MemberFunctionPtr pShutdownFunction = NULL)
                 : Test(pTestName),
                   mpObject(pObject),
@@ -974,7 +974,7 @@ namespace EA
             /// you should avoid using this function if you want to avoid allocating 
             /// global memory. You can instead call AddTest with your own supplied TestFunction.
             ///
-            virtual void AddTest(const char8_t* pTestName, TestFunction::FunctionPtr pFunction);
+            virtual void AddTest(const char* pTestName, TestFunction::FunctionPtr pFunction);
 
             /// AddTest (TestMemberFunction)
             ///
@@ -984,7 +984,7 @@ namespace EA
             /// If the same function is added multiple times, it is tested multiple times.
             ///
             template<typename U>
-            void AddTest(const char8_t* pTestName, U* pObject,
+            void AddTest(const char* pTestName, U* pObject,
                 typename TestMemberFunction<U>::MemberFunctionPtr pTestFunction,
                 typename TestMemberFunction<U>::MemberFunctionPtr pInitFunction = NULL,
                 typename TestMemberFunction<U>::MemberFunctionPtr pShutdownFunction = NULL)
@@ -1013,7 +1013,7 @@ namespace EA
             /// Remove an existing Test from the suite.
             /// The Shutdown function of the Test will be called.
             ///
-            virtual bool RemoveTest(const char8_t* pTestName, bool bDeleteIfOwned = true);
+            virtual bool RemoveTest(const char* pTestName, bool bDeleteIfOwned = true);
 
             /// FindTest
             ///
@@ -1021,7 +1021,7 @@ namespace EA
             /// The pTestName may be of the form <suite>/<suite>/.../<name>
             /// for the case of test suites within test suites.
             ///
-            Test* FindTest(const char8_t* pTestName);
+            Test* FindTest(const char* pTestName);
 
             /// EnumerateTests
             ///
@@ -1040,7 +1040,7 @@ namespace EA
             };
             typedef eastl::vector<TestInfo> TestArray;
 
-            TestInfo* FindTestInfo(const char8_t* pTestName, bool bRecursive);
+            TestInfo* FindTestInfo(const char* pTestName, bool bRecursive);
 
         protected:
             TestArray mTests;        /// All tests in the collection.
@@ -1076,7 +1076,7 @@ namespace EA
             /// character is reserved for separating hierarchical test suites.
             /// The test result is initialized to kTestResultNone.
             ///
-            TestSuite(const char8_t* pTestName = NULL, EA::EAMain::ReportFunction pReportFunction = EA::EAMain::GetReportFunction());
+            TestSuite(const char* pTestName = NULL, EA::EAMain::ReportFunction pReportFunction = EA::EAMain::GetReportFunction());
 
             /// ~TestSuite
             ///
@@ -1116,7 +1116,7 @@ namespace EA
             ///
             /// To do: The declaration below should be fixed to return TestResult instead of int.
             ///
-            virtual int RunTest(const char8_t* pName);
+            virtual int RunTest(const char* pName);
 
             /// GetTestResult
             ///
@@ -1147,7 +1147,7 @@ namespace EA
             /// you should avoid using this function if you want to avoid allocating 
             /// global memory. You can instead call AddTest with your own supplied TestFunction.
             ///
-            virtual void AddTest(const char8_t* pTestName, TestFunction::FunctionPtr pFunction);
+            virtual void AddTest(const char* pTestName, TestFunction::FunctionPtr pFunction);
 
             /// AddTest (TestMemberFunction)
             ///
@@ -1157,7 +1157,7 @@ namespace EA
             /// If the same function is added multiple times, it is tested multiple times.
             ///
             template<typename U>
-            void AddTest(const char8_t* pTestName, U* pObject,
+            void AddTest(const char* pTestName, U* pObject,
                 typename TestMemberFunction<U>::MemberFunctionPtr pTestFunction,
                 typename TestMemberFunction<U>::MemberFunctionPtr pInitFunction = NULL,
                 typename TestMemberFunction<U>::MemberFunctionPtr pShutdownFunction = NULL)
@@ -1177,7 +1177,7 @@ namespace EA
             /// Remove an existing Test from the suite.
             /// The Shutdown function of the Test will be called.
             ///
-            virtual bool RemoveTest(const char8_t* pTestName, bool bDeleteIfOwned = true);
+            virtual bool RemoveTest(const char* pTestName, bool bDeleteIfOwned = true);
 
             /// WriteReport
             ///
@@ -1244,7 +1244,7 @@ namespace EA
             ///
             typedef int (*FunctionPtr)();
 
-            TestApplication(const char8_t* pTestApplicationName, int argc = 0, char** argv = NULL, 
+            TestApplication(const char* pTestApplicationName, int argc = 0, char** argv = NULL, 
                             FunctionPtr pInitFunction = NULL, FunctionPtr pShutdownFunction = NULL);
 
            ~TestApplication();
@@ -1366,7 +1366,7 @@ namespace EA
         class AutoRegisterTestFunction
         {
         public:
-            AutoRegisterTestFunction(const char8_t* pName, TestFunction::FunctionPtr pFunction)
+            AutoRegisterTestFunction(const char* pName, TestFunction::FunctionPtr pFunction)
                 : mpName(pName)
             {
                 GetRegistry().AddTest(pName, pFunction);
@@ -1382,7 +1382,7 @@ namespace EA
             AutoRegisterTestFunction& operator=(const AutoRegisterTestFunction&);
 
         private:
-            const char8_t* const mpName;
+            const char* const mpName;
         };
 
 
