@@ -40,7 +40,6 @@ target_include_directories(EATest PRIVATE ../EABase/include/Common)
 #-------------------------------------------------------------------------------------------
 # Dependencies
 #-------------------------------------------------------------------------------------------
-target_link_libraries(EATest EABase)
 target_link_libraries(EATest EAStdC)
 target_link_libraries(EATest EASTL)
 target_link_libraries(EATest EAMain)
