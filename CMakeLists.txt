@@ -35,11 +35,11 @@ add_definitions(-D_CRT_SECURE_NO_WARNINGS)
 # Include directories
 #-------------------------------------------------------------------------------------------
 target_include_directories(EATest PUBLIC include)
+target_include_directories(EATest PRIVATE ../EABase/include/Common)
 
 #-------------------------------------------------------------------------------------------
 # Dependencies
 #-------------------------------------------------------------------------------------------
-target_link_libraries(EATest EABase)
 target_link_libraries(EATest EAStdC)
 target_link_libraries(EATest EASTL)
 target_link_libraries(EATest EAMain)
